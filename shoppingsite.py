@@ -19,8 +19,7 @@ app = Flask(__name__)
 # A secret key is needed to use Flask sessioning features
 
 app.secret_key = 'kallieandhannahkallieandhannah'
-shopping_cart = {}
-session['shopping_cart'] = shopping_cart
+
 
 # Normally, if you refer to an undefined variable in a Jinja template,
 # Jinja silently ignores this. This makes debugging difficult, so we'll
@@ -103,14 +102,13 @@ def add_to_cart(melon_id):
     # - flash a success message
     # - redirect the user to the cart page
 
+    session['shopping_cart'] = session.get('shopping_cart', {})
 
-    session['shopping_cart'][melon_id] = shopping_cart.get(melon_id, 0)
-    shopping_cart[melon_id] += 1
+    session['shopping_cart'][melon_id] = session['shopping_cart'].get(melon_id, 0)
+    session['shopping_cart'][melon_id] += 1
 
     flash("You have successfully added a new melon to cart.")
 
-    print session
-    print shopping_cart
     return redirect("/cart")
 
 
