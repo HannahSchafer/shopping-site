@@ -7,17 +7,20 @@ Authors: Joel Burton, Christian Fernandez, Meggie Mahnken, Katie Byers.
 """
 
 
-from flask import Flask, render_template, redirect, flash
+from flask import Flask, render_template, redirect, flash, session
 import jinja2
 
 import melons
+
 
 
 app = Flask(__name__)
 
 # A secret key is needed to use Flask sessioning features
 
-app.secret_key = 'this-should-be-something-unguessable'
+app.secret_key = 'kallieandhannahkallieandhannah'
+shopping_cart = {}
+session['shopping_cart'] = shopping_cart
 
 # Normally, if you refer to an undefined variable in a Jinja template,
 # Jinja silently ignores this. This makes debugging difficult, so we'll
@@ -100,7 +103,15 @@ def add_to_cart(melon_id):
     # - flash a success message
     # - redirect the user to the cart page
 
-    return "Oops! This needs to be implemented!"
+
+    session['shopping_cart'][melon_id] = shopping_cart.get(melon_id, 0)
+    shopping_cart[melon_id] += 1
+
+    flash("You have successfully added a new melon to cart.")
+
+    print session
+    print shopping_cart
+    return redirect("/cart")
 
 
 @app.route("/login", methods=["GET"])
